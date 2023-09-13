@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap');
+
+$fontPoppins: 'Poppins', sans-serif;
+$fontDmsans: 'DM Sans', sans-serif;
+$colorWhite: #fff;
+$colorBlack: #000;
+$cardGrey: #9CA3AF;
+$footerGrey: #6B7280;
+
+.home-wrapper{
+    font-family: $fontDmsans;
+}
+
+.hero-section{
+    background-image: url("../../../public/resource/hero-image.png");
+    min-height: 600px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: $colorWhite;
+}
+
+.logo-text{
+    font-weight: 700;
+    font-size: 24px;
+
+}
+
+.auth-text{
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.form-control{
+    background-color: transparent !important;
+    color: #fff !important;
+}
+
+.hero-text{
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 56px;
+}
+
+.hero-description{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.hero-button{
+    background-color: #BE123C;
+    gap: 8px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: $colorWhite;
+    padding: 6px 16px;
+    
+}
+
+.rating{
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.feature-title{
+    font-size: 36px;
+    font-weight: 700;
+    color:#000;
+}
+
+.see-more{
+    font-size: 18px;
+    color:#BE123C;
+}
+
+.movie-genre{
+line-height: 0.5;
+font-weight: 700;
+font-size: 12px;
+color: #9CA3AF;
+}
+
+.movie-country{
+    line-height: 0;
+    font-weight: 700;
+    font-size: 12px;
+    color: #9CA3AF;
+}
+
+.movie-title{
+    line-height: 0;
+    font-weight: 700;
+    font-size: 18px;
+    color:#111827;
+}
+
+.card-rating{
+    font-weight: 400;
+    font-size: 12px;
+    color:#111827;
+}
+
+
