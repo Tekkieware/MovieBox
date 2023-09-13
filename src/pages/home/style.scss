@@ -32,9 +32,34 @@ $footerGrey: #6B7280;
     font-size: 16px;
 }
 
-.form-control{
-    background-color: transparent !important;
-    color: #fff !important;
+.has-search{
+    position: relative;
+}
+
+.form-control-feedback {
+    position: absolute;
+    top: 8px;
+    right: 30px;
+}
+
+
+
+
+.search-box{
+    color: #fff;
+    width: 100%;
+    background-color: transparent;
+    border: 2px solid #fff;
+    border-radius: 6px;
+    padding: 6px 10px;
+    outline: none;
+
+}
+
+.search-box::placeholder{
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .hero-text{
@@ -77,6 +102,20 @@ $footerGrey: #6B7280;
     color:#BE123C;
 }
 
+.movie-card{
+    position: relative;
+}
+
+.fav-icon{
+    position:absolute;
+    right: 30px;
+    top: 70px;
+    background-color:#F3F4F680;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
 .movie-genre{
 line-height: 0.5;
 font-weight: 700;
@@ -103,6 +142,8 @@ color: #9CA3AF;
     font-size: 12px;
     color:#111827;
 }
+
+
 
 .footer-links{
     font-size: 18px;

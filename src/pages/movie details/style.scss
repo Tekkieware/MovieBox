@@ -9,7 +9,15 @@ $cardGrey: '#9CA3AF';
 $footerGrey: '#6B7280';
 
 .details-wrapper{
-    background-color: red;
     font-family: $fontPoppins;
 }
 
+.side-bar{
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+    height: 100vh;
+    border-radius: 0 45px 45px 0;
+}
+
+.side-bar-text{
+    
+}

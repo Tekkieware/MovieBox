@@ -1,7 +1,6 @@
 import React from 'react'
 import './style.scss'
 import Header from '../../components/Header'
-import Rating from '../../components/Rating'
 import MovieCard from '../../components/MovieCard'
 import Footer from '../../components/Footer'
 
