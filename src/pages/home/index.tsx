@@ -1,10 +1,21 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import './style.scss'
 import Header from '../../components/Header'
 import MovieCard from '../../components/MovieCard'
 import Footer from '../../components/Footer'
+import { movies } from "../../models/models";
+import axios from 'axios'
 
 const Home: React.FC = () => {
+  useEffect(() => {
+    
+    return () => {
+        
+    }
+}, []);
+  
+  
+
   return (
     <div className='home-wrapper'>
       <div className="container-fluid hero-section">
