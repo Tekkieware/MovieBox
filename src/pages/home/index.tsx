@@ -7,17 +7,51 @@ import { movies } from "../../models/models";
 import axios from 'axios'
 
 const Home: React.FC = () => {
+
+  const [moviesList, setMoviesList] = useState<movies[]>([])
+  const [isloading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string>("")
+
+  const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZTU0NzdlYjMyNmM2MzZkZGMxOWE2MGI5YjhmYTRiMSIsInN1YiI6IjY1MDA1NjZjZWZlYTdhMDEzN2QyNjA0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6ZODOqwBK7ly-guNQC1wYAq2U1Ti4CTrS3hwNP35Qik"
   useEffect(() => {
-    
-    return () => {
-        
-    }
+    getMovies()
+    return () => {} 
 }, []);
   
-  
+async function getMovies() {
+  setIsLoading(true)
+  try {
+    await axios.get(
+      'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', {
+        headers: {
+          Authorization: 'Bearer ' + token,
+          Accept: 'application/json',
+
+        }
+       }).then((response) =>{
+            const {results} = response.data
+            setMoviesList(results.splice(0, 10))
+            console.log('status is: ', response.status);
+          })
+          ; 
+      setIsLoading(false)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      setIsLoading(false)
+      setError(error.message)
+    } else {
+      setIsLoading(false)
+      
+      setError('An unexpected error occurred');
+    }
+  }
+}
+
 
   return (
     <div className='home-wrapper'>
+       
+      
       <div className="container-fluid hero-section">
         <div className='container'>
           <Header />
@@ -64,16 +98,9 @@ const Home: React.FC = () => {
 
         </div>
         <div className='row'>
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
-          <MovieCard />
+          
+          <MovieCard moviesList = {moviesList} />
+          
         </div>
       </div>
       <Footer />

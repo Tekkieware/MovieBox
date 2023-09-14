@@ -1,18 +1,30 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Rating from './Rating'
 import Favorite from './Favorite'
+import { movies } from '../models/models'
+import { Link } from 'react-router-dom'
 
 
-const MovieCard = () => {
+
+
+type movieArray = movies[]
+const MovieCard: React.FC<{ moviesList: movieArray }> = ({ moviesList }) => {   
+   
     return (
-        <><div className='col-md-3 movie-card py-5'>
-            <Favorite />
-            <img src="/resource/card-img.png" className="card-img-top" alt="..." />
-            <p className='py-3 movie-country'>USA, 2016 - Current</p>
-            <p className='movie-title'>Stranger things</p>
-            <Rating />
-            <p className='py-3 movie-genre'>Action, Adventure, Horror</p>
-        </div></>
+        <>
+        {moviesList.map((movie)=>(
+              
+            <div className='col-md-3 movie-card py-5' key={movie.id} data-testid="movie-card">
+                <Favorite />
+                <img data-testid="movie-poster" src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} className="card-img-top" alt="..." />
+                <p className='py-3 movie-country'>USA, <span data-testid="movie-release-date">{movie.release_date.slice(0,4)}</span></p>
+                <Link className='link' to={`/movies/${movie.id}`}><p className='movie-title' data-testid="movie-title">{movie.title}</p></Link>
+                <Rating vote={movie.vote_average} />
+                <p className='py-3 movie-genre'>Action, Adventure, Horror</p>
+            </div>
+
+            ))}
+        </>
     )
 }
 

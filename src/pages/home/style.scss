@@ -131,11 +131,21 @@ color: #9CA3AF;
 }
 
 .movie-title{
-    line-height: 0;
     font-weight: 700;
     font-size: 18px;
     color:#111827;
+    line-height: 24px;
 }
+
+
+.link{
+    text-decoration: none;
+}
+
+.movie-title:hover{
+    color: #BE123C;
+}
+
 
 .card-rating{
     font-weight: 400;

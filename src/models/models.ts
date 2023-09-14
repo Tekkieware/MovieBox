@@ -15,25 +15,25 @@ export interface movies {
   vote_count: number
 }
 
-interface genre {
+export interface genre {
   id: number,
   name: string
 }
 
-interface production_companies {
+export interface production_companies {
   id: number,
   logo_path: string,
   name: string,
   origin_country: string
 }
 
-interface production_countries {
+export interface production_countries {
 
   iso_3166_1: string,
   name: string
 }
 
-interface spoken_languages {
+export interface spoken_languages {
   english_name: string,
   iso_639_1: string,
   name: string
@@ -49,7 +49,7 @@ export interface movie {
     backdrop_path: string
   },
   budget: number,
-  genres: genre[],
+  genres: genre[] |null,
   homepage: string,
   id: number,
   imdb_id: string,
@@ -58,12 +58,12 @@ export interface movie {
   overview: string,
   popularity: number,
   poster_path: string,
-  production_companies: production_companies[],
-  production_countries: production_countries[],
+  production_companies: production_companies[] | null,
+  production_countries: production_countries[] | null,
   release_date: string,
   revenue: number,
   runtime: number,
-  spoken_languages: spoken_languages[],
+  spoken_languages: spoken_languages[] | null,
   status: string,
   tagline: string,
   title: string,

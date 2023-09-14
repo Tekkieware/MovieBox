@@ -1,8 +1,59 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import './style.scss'
+import {useNavigate, useParams} from 'react-router-dom'
 import Logo from '../../components/Logo'
+import axios, {AxiosResponse} from 'axios'
+import {movie} from '../../models/models'
+
 
 const Details: React.FC = () => {
+  
+  const navigate = useNavigate()
+  const [isloading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string>("")
+  const [currentMovie, setCurrentMovie] = useState<any>({})
+  const {id} = useParams()
+  const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZTU0NzdlYjMyNmM2MzZkZGMxOWE2MGI5YjhmYTRiMSIsInN1YiI6IjY1MDA1NjZjZWZlYTdhMDEzN2QyNjA0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6ZODOqwBK7ly-guNQC1wYAq2U1Ti4CTrS3hwNP35Qik"
+ 
+  useEffect(()=>{
+    getMovie(Number(id))
+  }, [])  
+
+
+
+  async function getMovie(id:number) {
+    setIsLoading(true)
+    try {
+      await axios.get<movie>(
+        `https://api.themoviedb.org/3/movie/${id}`, {
+          headers: {
+            Authorization: 'Bearer ' + token,
+            Accept: 'application/json',
+
+          }
+         }).then((response) =>{
+              
+              setCurrentMovie(response.data)
+              console.log(response.data)  
+              console.log('status is: ', response.status);
+              console.log(currentMovie)
+            })
+            ; 
+          
+        setIsLoading(false)
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setIsLoading(false)
+        setError(error.message)
+      } else {
+        setIsLoading(false)
+        
+        setError('An unexpected error occurred');
+      }
+    }
+  }
+
+
   return (
     <div className="container-fluid details-wrapper">
       <div className='row'>
