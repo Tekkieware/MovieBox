@@ -11,20 +11,23 @@ const Details: React.FC = () => {
   const navigate = useNavigate()
   const [isloading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
-  const [currentMovie, setCurrentMovie] = useState<any>({})
+  const [currentMovie, setCurrentMovie] = useState<movie>()
+  const [utcDate, SetUtcDate] = useState<Date>()
+  const [date, setDate] = useState<any>("")
   const {id} = useParams()
   const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZTU0NzdlYjMyNmM2MzZkZGMxOWE2MGI5YjhmYTRiMSIsInN1YiI6IjY1MDA1NjZjZWZlYTdhMDEzN2QyNjA0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6ZODOqwBK7ly-guNQC1wYAq2U1Ti4CTrS3hwNP35Qik"
  
   useEffect(()=>{
     getMovie(Number(id))
-  }, [])  
+  }, [currentMovie, id])  
 
+  
+ 
 
-
-  async function getMovie(id:number) {
+ function getMovie(id:number) {
     setIsLoading(true)
     try {
-      await axios.get<movie>(
+      axios.get<movie>(
         `https://api.themoviedb.org/3/movie/${id}`, {
           headers: {
             Authorization: 'Bearer ' + token,
@@ -34,8 +37,7 @@ const Details: React.FC = () => {
          }).then((response) =>{
               
               setCurrentMovie(response.data)
-              console.log(response.data)  
-              console.log('status is: ', response.status);
+              setDate(currentMovie?.release_date)
               console.log(currentMovie)
             })
             ; 
@@ -52,6 +54,7 @@ const Details: React.FC = () => {
       }
     }
   }
+  
 
 
   return (
@@ -87,21 +90,21 @@ const Details: React.FC = () => {
         <div className='col-md-10'>
           <div className='row m-4 watch-trailer text-center'>
             <span className='play'><img className='play-button p-3' src='/resource/play-icon.png' height={90} alt='play' /></span>
-            <img src='/resource/watch-trailer.png' alt='watch trailer' className='trailer-image' height={350} />
+            <img src={`https://image.tmdb.org/t/p/original${currentMovie?.backdrop_path}`} alt='watch trailer' className='trailer-image' height={350} />
           </div>
           <div className='row m-4 px-3'>
-            <div className='col-10 movie-details'><span data-testid="movie-title">Top Gun: Maverick</span> • <span data-testid="movie-release-date">2022</span> • PG-13 • <span data-testid="movie-runtime">2h 10m</span><span className='mx-4'><button className='genre-tag mx-2'>Action</button><button className='genre-tag mx-2'>Drama</button></span></div>
-            <div className='col-2 text-end'><span className='rate-score'><img src='/resource/star.png' height={30} alt='rating' />&nbsp;8.5</span><span className='rate-num'> | 350k</span></div>
+            <div className='col-10 movie-details'><span data-testid="movie-title">{currentMovie?.title}</span> • <span data-testid="movie-release-date">{new Date(date).toUTCString()}</span> • <span data-testid="movie-runtime">{currentMovie?.runtime}</span><span>mins</span><span className='mx-4'>{currentMovie?.genres.map((genre)=><button key={genre.id} className='genre-tag mx-1'>{genre.name}</button>)}</span></div>
+            <div className='col-2 text-end'><span className='rate-score'><img src='/resource/star.png' height={30} alt='rating' />&nbsp;{currentMovie?.vote_average.toString().slice(0,3)}</span><span className='rate-num'> | {currentMovie?.vote_count.toString().slice(0,2)}k</span></div>
           </div>
           <div className='row m-4 px-3'>
             <div className='col-8'>
               <div className='row'>
                 <span className='movie-desc' data-testid="movie-overview">
-                  After thirty years, Maverick is still pushing the envelope as a top naval aviator, but must confront ghosts of his past when he leads TOP GUN's elite graduates on a mission that demands the ultimate sacrifice from those chosen to fly it.
-                </span>
-                <span className='movie-director my-2 py-1'>Director : <b className='directior-name'>Joseph Kosinski</b></span>
-                <span className='movie-director py-1'>Writers : <b className='directior-name'>Jim Cash, Jack Epps Jr,  Peter Craig</b></span>
-                <span className='movie-director movie-director-last py-1'>Stars : <b className='directior-name'>Tom Cruise, Jennifer Connelly, Miles Teller</b></span>
+                  {currentMovie?.overview}
+                  </span>
+                <span className='movie-director my-2 py-1'>Languages Spoken : {currentMovie?.spoken_languages.map((language, id)=><b key={id} className='directior-name'>{language.name}</b>)}</span>
+                <span className='movie-director py-1'>Production Companies : {currentMovie?.production_companies.map((company)=><b key={company.id} className='directior-name'>{company.name}</b>)}</span>
+                <span className='movie-director movie-director-last py-1'>Production Countries : {currentMovie?.production_countries.map((country,id)=><b key={id} className='directior-name'>{country.name}</b>)}</span>
 
               </div>
               <div className='row py-3'>
@@ -124,7 +127,6 @@ const Details: React.FC = () => {
           </div>
         </div>
       </div>
-
     </div>
   )
 }

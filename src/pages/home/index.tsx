@@ -18,11 +18,11 @@ const Home: React.FC = () => {
     return () => {} 
 }, []);
   
-async function getMovies() {
+function getMovies() {
   setIsLoading(true)
   try {
-    await axios.get(
-      'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', {
+    axios.get(
+      'https://api.themoviedb.org/3/movie/top_rated', {
         headers: {
           Authorization: 'Bearer ' + token,
           Accept: 'application/json',
