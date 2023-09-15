@@ -102,13 +102,13 @@ const Details: React.FC = () => {
                 <span className='movie-desc' data-testid="movie-overview">
                   {currentMovie?.overview}
                   </span>
-                <span className='movie-director my-2 py-1'>Languages Spoken : {currentMovie?.spoken_languages.map((language, id)=><b key={id} className='directior-name'>{language.name}</b>)}</span>
-                <span className='movie-director py-1'>Production Companies : {currentMovie?.production_companies.map((company)=><b key={company.id} className='directior-name'>{company.name}</b>)}</span>
-                <span className='movie-director movie-director-last py-1'>Production Countries : {currentMovie?.production_countries.map((country,id)=><b key={id} className='directior-name'>{country.name}</b>)}</span>
+                <span className='movie-director my-2 py-1'>Languages Spoken : {currentMovie?.spoken_languages.map((language, id)=><b key={id} className='directior-name'>{language.name} | </b>)}</span>
+                <span className='movie-director py-1'>Production Companies : {currentMovie?.production_companies.map((company)=><b key={company.id} className='directior-name'>{company.name} | </b>)}</span>
+                <span className='movie-director movie-director-last py-1'>Production Countries : {currentMovie?.production_countries.map((country,id)=><b key={id} className='directior-name'>{country.name} | </b>)}</span>
 
               </div>
               <div className='row py-3'>
-                <span className='dropdown mx-2'><button className='top'>Top rated movie #65</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Awards 9 nominations<button className='drop-icon float-end'><img src="/resource/drop-icon.png" alt="dropdown" /></button></span>
+                <span className='dropdown mx-2'><button className='top'>Top rated movie #65</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Awards 9 nominations<button className='drop-icon float-end'><img height={20} src="/resource/drop-icon.png" alt="dropdown" /></button></span>
               </div>
 
             </div>

@@ -6,6 +6,7 @@ import Footer from '../../components/Footer'
 import { movies } from "../../models/models";
 import axios from 'axios'
 
+
 const Home: React.FC = () => {
 
   const [moviesList, setMoviesList] = useState<movies[]>([])
@@ -102,6 +103,7 @@ function getMovies() {
           <MovieCard moviesList = {moviesList} />
           
         </div>
+        
       </div>
       <Footer />
     </div>
