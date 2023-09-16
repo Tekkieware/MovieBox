@@ -5,6 +5,8 @@ import MovieCard from '../../components/MovieCard'
 import Footer from '../../components/Footer'
 import { movies } from "../../models/models";
 import axios from 'axios'
+import Loader from '../../components/Loader'
+import Error from '../../components/Error'
 
 
 const Home: React.FC = () => {
@@ -20,8 +22,8 @@ const Home: React.FC = () => {
 }, []);
   
 function getMovies() {
-  setIsLoading(true)
-  try {
+
+    setIsLoading(true)
     axios.get(
       'https://api.themoviedb.org/3/movie/top_rated', {
         headers: {
@@ -33,19 +35,25 @@ function getMovies() {
             const {results} = response.data
             setMoviesList(results.splice(0, 10))
             console.log('status is: ', response.status);
-          })
+            setError("")
+            setIsLoading(false)
+          }).catch(function (error) {
+            if (error.response) {
+              setIsLoading(false)
+              const{status_message} = error.response.data;
+              setError(status_message)
+              
+            } else if (error.request) {
+              setIsLoading(false)
+              setError("An unexpected error occurred");
+            } else {
+              setIsLoading(false)
+              setError( "An unexpected error occurred");
+            }
+          });
           ; 
-      setIsLoading(false)
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      setIsLoading(false)
-      setError(error.message)
-    } else {
-      setIsLoading(false)
       
-      setError('An unexpected error occurred');
-    }
-  }
+  
 }
 
 
@@ -98,11 +106,26 @@ function getMovies() {
           </div>
 
         </div>
-        <div className='row'>
+        {isloading ?
+        <div className='row loader-holder text-center'>
+        <Loader />
+        </div>
+      :error?
+          <Error message={error} />
+
+      :
+      <div className='row'>
           
           <MovieCard moviesList = {moviesList} />
           
         </div>
+        }
+        
+        
+        
+        
+        
+        
         
       </div>
       <Footer />

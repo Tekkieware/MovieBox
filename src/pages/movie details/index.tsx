@@ -4,29 +4,29 @@ import {useNavigate, useParams} from 'react-router-dom'
 import Logo from '../../components/Logo'
 import axios, {AxiosResponse} from 'axios'
 import {movie} from '../../models/models'
+import DetailLoader from '../../components/DetailLoader'
+import Error from '../../components/Error'
 
 
 const Details: React.FC = () => {
   
-  const navigate = useNavigate()
   const [isloading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
   const [currentMovie, setCurrentMovie] = useState<movie>()
-  const [utcDate, SetUtcDate] = useState<Date>()
   const [date, setDate] = useState<any>("")
   const {id} = useParams()
   const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZTU0NzdlYjMyNmM2MzZkZGMxOWE2MGI5YjhmYTRiMSIsInN1YiI6IjY1MDA1NjZjZWZlYTdhMDEzN2QyNjA0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6ZODOqwBK7ly-guNQC1wYAq2U1Ti4CTrS3hwNP35Qik"
  
   useEffect(()=>{
     getMovie(Number(id))
-  }, [currentMovie, id])  
+  }, [])  
 
   
  
 
  function getMovie(id:number) {
-    setIsLoading(true)
-    try {
+    
+      setIsLoading(true)
       axios.get<movie>(
         `https://api.themoviedb.org/3/movie/${id}`, {
           headers: {
@@ -34,33 +34,39 @@ const Details: React.FC = () => {
             Accept: 'application/json',
 
           }
-         }).then((response) =>{
-              
+         }).then((response) =>{  
               setCurrentMovie(response.data)
               setDate(currentMovie?.release_date)
-              console.log(currentMovie)
-            })
+              setError("")
+              setIsLoading(false)
+            }).catch(function (error) {
+              if (error.response) {
+                setIsLoading(false)
+                const{status_message} = error.response.data;
+                setError(status_message)
+                
+              } else if (error.request) {
+                setIsLoading(false)
+                setError("An unexpected error occurred");
+              } else {
+                setIsLoading(false)
+                setError( "An unexpected error occurred");
+              }
+            });
             ; 
           
-        setIsLoading(false)
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setIsLoading(false)
-        setError(error.message)
-      } else {
-        setIsLoading(false)
-        
-        setError('An unexpected error occurred');
-      }
-    }
   }
   
 
 
   return (
     <div className="container-fluid details-wrapper">
+      <div className='row d-block d-md-none text-center'>
+        <div className='mt-4'> <span><Logo /></span></div>
+        
+      </div>
       <div className='row'>
-        <div className='col-2 side-bar'>
+        <div className='col-2 side-bar d-none d-md-block'>
 
           <div className='row py-5 text-center'>
             <Logo />
@@ -88,16 +94,22 @@ const Details: React.FC = () => {
         </div>
 
         <div className='col-md-10'>
-          <div className='row m-4 watch-trailer text-center'>
+          {isloading?
+          <div className='row'><DetailLoader /></div>
+          :error?
+            <Error message={error} />
+          :
+          <div>
+            <div className='row m-4 watch-trailer text-center'>
             <span className='play'><img className='play-button p-3' src='/resource/play-icon.png' height={90} alt='play' /></span>
             <img src={`https://image.tmdb.org/t/p/original${currentMovie?.backdrop_path}`} alt='watch trailer' className='trailer-image' height={350} />
           </div>
           <div className='row m-4 px-3'>
-            <div className='col-10 movie-details'><span data-testid="movie-title">{currentMovie?.title}</span> • <span data-testid="movie-release-date">{new Date(date).toUTCString()}</span> • <span data-testid="movie-runtime">{currentMovie?.runtime}</span><span>mins</span><span className='mx-4'>{currentMovie?.genres.map((genre)=><button key={genre.id} className='genre-tag mx-1'>{genre.name}</button>)}</span></div>
-            <div className='col-2 text-end'><span className='rate-score'><img src='/resource/star.png' height={30} alt='rating' />&nbsp;{currentMovie?.vote_average.toString().slice(0,3)}</span><span className='rate-num'> | {currentMovie?.vote_count.toString().slice(0,2)}k</span></div>
+            <div className='col-md-10 movie-details'><span data-testid="movie-title">{currentMovie?.title}</span> • <span data-testid="movie-release-date">{new Date(date).toUTCString()}</span> • <span data-testid="movie-runtime">{currentMovie?.runtime}</span><span>mins</span><span className='mx-4'>{currentMovie?.genres.map((genre)=><button key={genre.id} className='genre-tag mx-1'>{genre.name}</button>)}</span></div>
+            <div className='col-md-2 text-end'><span className='rate-score'><img src='/resource/star.png' height={30} alt='rating' />&nbsp;{currentMovie?.vote_average.toString().slice(0,3)}</span><span className='rate-num'> | {currentMovie?.vote_count.toString().slice(0,2)}k</span></div>
           </div>
           <div className='row m-4 px-3'>
-            <div className='col-8'>
+            <div className='col-md-8'>
               <div className='row'>
                 <span className='movie-desc' data-testid="movie-overview">
                   {currentMovie?.overview}
@@ -112,7 +124,7 @@ const Details: React.FC = () => {
               </div>
 
             </div>
-            <div className='col-4 px-5 text-center'>
+            <div className='col-md-4 px-md-5 text-center'>
               <div className='row'>
                 <span className='showbutton'><img src='/resource/ticket-icon.png' alt='tickets' />&nbsp;See Showtimes</span>
               </div>
@@ -125,6 +137,11 @@ const Details: React.FC = () => {
               </div>
             </div>
           </div>
+          </div>
+        }
+
+          
+          
         </div>
       </div>
     </div>
